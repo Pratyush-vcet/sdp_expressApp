@@ -3,8 +3,13 @@ const express = require('express')
 const logger = require('./middlewares/logger')
 const dotenv = require('dotenv')
 dotenv.config()
+const connectDB = require('./config/db')
 
 const app = express()
+connectDB()
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
+
 app.use(logger)
 
 app.get('/greetings', (req, res) => {
