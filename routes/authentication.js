@@ -2,11 +2,36 @@
 const { Router } = require('express')
 const users = require('../models/users')
 const authRouter = Router()
+const {encrypt, compare} = require('../utils')
 
 authRouter.post('/login', (req, res) => {
-  return res.status(200).json({
-    message: 'login successful'
-  })
+  return Promise.resolve()
+    .then(() => {
+      if (!(req.body.email && req.body.password)) {
+        throw Error('email or password is not found')
+      }
+      return users.findOne({email: req.body.email})
+    })
+    .then((data) => {
+      if (!data) {
+        throw Error('User not found')
+      }
+      return compare(req.body.password, data.password)
+    })
+    .then((match) => {
+      if (!match) {
+        throw Error('invalid password')
+      }
+      return res.status(200).json({
+        message: 'login successful'
+      })
+    })
+    .catch(error => {
+      return res.status(422).json({
+        message: 'login failed',
+        error: error.message
+      })
+    })
 })
 
 authRouter.post('/register', (req, res) => {
@@ -15,6 +40,10 @@ authRouter.post('/register', (req, res) => {
       if (!(req.body.email && req.body.username && req.body.password)) {
         throw Error('email, username or password is not found')
       }
+      return encrypt(req.body.password)
+    })
+    .then((hash) => {
+      req.body.password = hash
       return users.create(req.body)
     })
     .then(data => {
