@@ -2,7 +2,7 @@
 const { Router } = require('express')
 const users = require('../models/users')
 const authRouter = Router()
-const {encrypt, compare} = require('../utils')
+const {encrypt, compare, createAccessToken} = require('../utils')
 
 authRouter.post('/login', (req, res) => {
   return Promise.resolve()
@@ -23,7 +23,8 @@ authRouter.post('/login', (req, res) => {
         throw Error('invalid password')
       }
       return res.status(200).json({
-        message: 'login successful'
+        message: 'login successful',
+        access_token: createAccessToken(req.body.email)
       })
     })
     .catch(error => {
@@ -49,6 +50,8 @@ authRouter.post('/register', (req, res) => {
     .then(data => {
       data = data.toJSON()
       delete data.password
+
+      data.access_token = createAccessToken(req.body.email)
 
       return res.status(200).json({
         message: 'regestered successful',
