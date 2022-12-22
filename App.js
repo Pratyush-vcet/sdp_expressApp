@@ -1,9 +1,11 @@
+/* eslint-disable no-multiple-empty-lines */
 const authRouter = require('./routes/authentication')
 const express = require('express')
 const logger = require('./middlewares/logger')
 const dotenv = require('dotenv')
 dotenv.config()
 const connectDB = require('./config/db')
+const profileRouter = require('./routes/profile')
 
 const app = express()
 connectDB()
@@ -18,7 +20,10 @@ app.get('/greetings', (req, res) => {
   })
 })
 
+
 app.use('/api/auth', authRouter)
+app.use('/api/profile', profileRouter)
+
 
 app.listen(process.env.PORT, (error) => {
   if (error) {
