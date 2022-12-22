@@ -1,5 +1,7 @@
 const express = require("express")
 const logger = require("./middlewares/logger")
+const dotenv = require("dotenv")
+dotenv.config();
 
 const app = express()
 app.use(logger)
@@ -10,9 +12,9 @@ app.get("/greetings", (req, res) => {
     })
 })
 
-app.listen(8000, (error) => {
+app.listen(process.env.PORT, (error) => {
     if (error) {
         console.log("error", error)
     }
-    console.log("Server running on 8000")
+    console.log("Server running on "+ process.env.PORT)
 })
