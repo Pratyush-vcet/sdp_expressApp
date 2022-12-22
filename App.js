@@ -1,3 +1,6 @@
+
+
+const authRouter = require("./routes/authentication")
 const express = require("express")
 const logger = require("./middlewares/logger")
 const dotenv = require("dotenv")
@@ -12,9 +15,11 @@ app.get("/greetings", (req, res) => {
     })
 })
 
+app.use("/api/auth",authRouter)
+
 app.listen(process.env.PORT, (error) => {
     if (error) {
         console.log("error", error)
     }
-    console.log("Server running on "+ process.env.PORT)
+    console.log("Server running on " + process.env.PORT)
 })
