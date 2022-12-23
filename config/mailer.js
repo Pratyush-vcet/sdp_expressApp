@@ -7,8 +7,8 @@ const sendMail = (email,username,  otp) => {
     host: 'smtp.gmail.com',
     port: '465',
       auth: {
-        user: "super.im0203@gmail.com",
-        pass: "wrtonumwqzbbbbgi",
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD,
       },
     });
     return transport.sendMail({
