@@ -12,7 +12,7 @@ const sendMail = (email,username,  otp) => {
       },
     });
     return transport.sendMail({
-      from: "super.im0203@gmail.com",
+      from: process.env.MAIL_USER,
       to: email,
       subject: "OTP for email verification",
       html: `

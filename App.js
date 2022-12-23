@@ -3,9 +3,13 @@ const authRouter = require('./routes/authentication')
 const express = require('express')
 const logger = require('./middlewares/logger')
 const dotenv = require('dotenv')
-dotenv.config()
+
 const connectDB = require('./config/db')
 const profileRouter = require('./routes/profile')
+
+dotenv.config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+})
 
 const app = express()
 connectDB()
@@ -31,3 +35,5 @@ app.listen(process.env.PORT, (error) => {
   }
   console.log('Server running on ' + process.env.PORT)
 })
+
+module.exports = app

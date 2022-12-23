@@ -62,7 +62,7 @@ authRouter.post("/register", (req, res) => {
     .then(() => {
       delete resData.otp
       return res.status(200).json({
-      message: "regestered successful",
+      message: "registered successful",
       data: resData,
     });
   })
